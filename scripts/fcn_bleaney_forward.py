@@ -18,8 +18,6 @@ import fcn
 from fcn.models import FCN16s
 from fcn.models import FCN32s
 from fcn.models import FCN8s
-from fcn.models import FCNbleaney
-from fcn import bleaney
 
 
 class Forwarding(object):
@@ -27,7 +25,7 @@ class Forwarding(object):
     def __init__(self, gpu, chainermodel=None):
         self.gpu = gpu
 
-        self.target_names = bleaney.SegmentationClassDataset.target_names
+        self.target_names = fcn.pascal.SegmentationClassDataset.target_names
         self.n_class = len(self.target_names)
 
         if chainermodel is None:
@@ -44,9 +42,6 @@ class Forwarding(object):
         elif osp.basename(chainermodel).startswith('fcn32s'):
             self.model_name = 'fcn32s'
             self.model = FCN32s(n_class=self.n_class)
-        elif osp.basename(chainermodel).startswith('bleaney'):
-            self.model_name = 'bleaney'
-            self.model = FCNbleaney(n_class=self.n_class)
         else:
             raise ValueError(
                 'Chainer model filename must start with fcn8s, '

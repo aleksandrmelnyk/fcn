@@ -11,6 +11,7 @@ import fcn
 from fcn.models import FCN32s
 from fcn.models import VGG16
 from fcn import pascal
+from fcn import bleaney
 
 
 def get_vgg16_pretrained_model():
@@ -25,13 +26,13 @@ def main():
     gpu = 0
 
     # setup dataset
-    dataset = pascal.SegmentationClassDataset()
+    dataset = bleaney.SegmentationClassDataset()
     n_class = len(dataset.target_names)
 
     # setup model
-    pretrained_model = get_vgg16_pretrained_model()
+    # pretrained_model = get_vgg16_pretrained_model()
     model = FCN32s(n_class=n_class)
-    fcn.util.copy_chainermodel(pretrained_model, model)
+    # fcn.util.copy_chainermodel(pretrained_model, model)
     if gpu != -1:
         model.to_gpu(gpu)
 
@@ -45,9 +46,9 @@ def main():
         model=model,
         optimizer=optimizer,
         weight_decay=0.0005,
-        test_interval=1000,
+        test_interval=5000,
         max_iter=100000,
-        snapshot=4000,
+        snapshot=10000,
         gpu=gpu,
     )
     trainer.train()
